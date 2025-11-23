@@ -1,8 +1,8 @@
-# Meet Recorder CLEAN v3.0
+# Arali.ai - AI Sales Coach PRO v3.6.4
 
-**Complete meeting recorder with AI sales coaching**
+**Premium AI-powered sales coaching extension for Google Meet**
 
-## ✅ Features
+## ✨ Features
 
 ### 1. **Auto Record** 🎙️
 - Automatically starts recording when you join a meeting
@@ -21,9 +21,15 @@
 ### 4. **AI Sales Coach** 🤖
 - Live AI suggestions on what to say next
 - Analyzes conversation context
-- Provides smart responses (Gemini AI)
+- Provides smart responses (OpenAI GPT-4o-mini)
+- Ultra-fast response times
 
-### 5. **Auto Save Everything** 💾
+### 5. **Keyboard Shortcuts** ⌨️
+- **Ctrl:** Hide/Show ALL panels
+- **Shift:** Hide/Show Sales Coach panel only
+- Perfect for screen sharing
+
+### 6. **Auto Save Everything** 💾
 - Auto-saves audio recording (.webm)
 - Auto-saves transcript with speaker names (.txt)
 - Downloads to your Downloads folder
@@ -35,73 +41,81 @@
    Chrome → chrome://extensions/
    Enable "Developer mode"
    Click "Load unpacked"
-   Select: /Volumes/SHIVAY DATA/Writory-branch/without ai/chrome-extension-v2
+   Select the chrome-extension-v2 folder
    ```
 
 2. **Setup API Key (for AI):**
    ```
    Click extension icon
-   Enter Gemini API key
-   Click "Save Settings"
+   Enter OpenAI API key
+   Click "Save Configuration"
    ```
 
-3. **Get Gemini API Key:**
-   - Go to: https://makersuite.google.com/app/apikey
-   - Create new key
+3. **Get OpenAI API Key:**
+   - Go to: https://platform.openai.com/api-keys
+   - Click "Create new secret key"
    - Copy and paste in extension
 
 ## 📱 Usage
 
 1. **Join a Google Meet**
 2. **Extension auto-starts:**
-   - Top-right: Main panel (status, participants, conversation)
-   - Top-left: AI Coach panel (suggestions)
+   - Top-right: Sales Coach panel (status, participants, conversation)
+   - Bottom-center: AI Coach panel (suggestions)
 
 3. **Start Speaking:**
    - Recording automatically starts
    - Live transcription appears
-   - AI gives suggestions
+   - AI gives instant suggestions
 
-4. **Leave Meeting:**
+4. **Use Keyboard Shortcuts:**
+   - Press **Ctrl** to hide all panels (screen sharing)
+   - Press **Shift** to hide only Sales Coach panel
+
+5. **Leave Meeting:**
    - Recording auto-stops
    - Files auto-download:
-     - `meeting-[timestamp].webm` (audio)
-     - `transcript-[timestamp].txt` (with speaker names)
+     - `sales-meeting-[timestamp].webm` (audio)
+     - `sales-transcript-[timestamp].txt` (with speaker names)
 
 ## 📊 Panels
 
-### Main Panel (Right)
-- **Status:** In meeting / Recording
-- **Participants:** List of real people (no UI elements)
+### Sales Coach Panel (Right Side)
+- **Status:** Recording status with pulse animation
+- **Participants:** List of real people with colored dots
 - **Live Conversation:** Recent messages with speaker names
+- **Premium Design:** Glassmorphism with animated effects
 
-### AI Coach Panel (Left)
-- **What to Say Next:** AI suggestions
-- Updates after each conversation turn
+### AI Coach Panel (Bottom Center)
+- **What to Say Next:** AI suggestions in real-time
+- **Client's Last Message:** Shows what client just said
+- **Translucent Design:** See screen content behind panel
+- **Fast Updates:** Instant AI responses
 
 ## 🔧 Technical Details
 
 **Files:**
-- `manifest.json` - Extension config
-- `participants.js` - Participant detection (strict filtering)
-- `recorder-full.js` - Recording + AI + Speech recognition
-- `popup.html/js` - Settings UI
+- `manifest.json` - Extension config (v3.6.4)
+- `participants-fixed.js` - Participant detection (strict filtering)
+- `recorder-openai.js` - Recording + AI + Speech recognition
+- `popup.html/js` - Premium settings UI
 
 **APIs Used:**
-- Web Speech API - Live transcription
+- Web Speech API - Real-time transcription with interim results
 - MediaRecorder API - Audio recording
-- Gemini API - AI suggestions
+- OpenAI API - AI suggestions (GPT-4o-mini for speed)
 
 **No Server Required:**
 - Everything runs in browser
 - No backend/server needed
-- No port 3001 errors
+- Direct OpenAI API calls
 
 ## 🐛 Troubleshooting
 
 **No AI suggestions:**
-- Make sure you entered Gemini API key
-- Click extension icon → Enter key → Save
+- Make sure you entered OpenAI API key
+- Click extension icon → Enter key → Save Configuration
+- Check console for API errors
 
 **Participants not detected:**
 - Wait 5-10 seconds after joining
@@ -112,19 +126,31 @@
 - Allow microphone permission
 - Check browser console for errors
 
-**"More actions" appearing:**
-- This is fixed in v3.0!
-- Make sure you loaded chrome-extension-v2 folder
+**Keyboard shortcuts not working:**
+- Make sure Google Meet tab is focused
+- Click on the page first
+- Check console logs for key press events
 
 ## 📝 Notes
 
 - Works ONLY on Google Meet
 - Requires microphone permission
-- AI requires Gemini API key (free tier available)
+- AI requires OpenAI API key (paid, but very affordable)
+- Uses GPT-4o-mini for fast responses (~$0.15 per 1M tokens)
 - Transcript saves with exact speaker names
-- All processing happens locally in browser
+- All processing happens in browser
+- Premium SaaS-style UI design
+
+## 🎨 Design Features
+
+- **Glassmorphism:** Translucent panels with blur effects
+- **Animations:** Smooth transitions and pulse effects
+- **Dark Theme:** Modern gradient backgrounds
+- **Responsive:** Works on all screen sizes
+- **Professional:** Inspired by Vercel, Linear, Stripe
 
 ---
 
-**Version:** 3.0.0
+**Version:** 3.6.4
 **Status:** Production Ready ✅
+**Design:** Premium SaaS 💎
