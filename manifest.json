@@ -16,7 +16,7 @@
       "matches": ["https://meet.google.com/*"],
       "js": [
         "participants-fixed.js",
-        "visual-tracker.js",
+        "visual-tracker-lite.js",
         "audio-tracker.js",
         "engagement-tracker.js",
         "recorder-openai.js"
