@@ -29,23 +29,18 @@
    */
   async function createOffscreenDocument() {
     try {
-      // Check if offscreen document already exists
-      const existingContexts = await chrome.runtime.getContexts({
-        contextTypes: ['OFFSCREEN_DOCUMENT']
-      });
-
-      if (existingContexts.length > 0) {
-        console.log('✅ Offscreen document already exists');
-        return true;
-      }
-
-      // Create new offscreen document
-      await chrome.runtime.sendMessage({
+      // Try to create offscreen document
+      const response = await chrome.runtime.sendMessage({
         type: 'CREATE_OFFSCREEN_DOCUMENT'
       });
 
-      console.log('✅ Offscreen document created');
-      return true;
+      if (response && response.success) {
+        console.log('✅ Offscreen document created');
+        return true;
+      } else {
+        console.log('⚠️ Offscreen document creation failed:', response?.error);
+        return response?.alreadyExists || false;
+      }
     } catch (error) {
       console.error('❌ Failed to create offscreen document:', error);
       return false;

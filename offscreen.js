@@ -35,18 +35,23 @@ async function initFaceMesh() {
   console.log('🔧 Initializing MediaPipe Face Mesh...');
 
   try {
-    // Wait for MediaPipe to be available
+    // Wait for MediaPipe to be available (check window object)
     let retries = 0;
-    while (typeof FaceMesh === 'undefined' && retries < 20) {
-      await new Promise(resolve => setTimeout(resolve, 500));
+    while (typeof window.FaceMesh === 'undefined' && retries < 20) {
+      console.log(`⏳ Waiting for MediaPipe... (${retries + 1}/20)`);
+      await new Promise(resolve => setTimeout(resolve, 300));
       retries++;
     }
 
-    if (typeof FaceMesh === 'undefined') {
+    if (typeof window.FaceMesh === 'undefined') {
+      console.error('❌ MediaPipe Face Mesh not found on window object');
+      console.log('Available on window:', Object.keys(window).filter(k => k.includes('Face') || k.includes('Media')));
       throw new Error('MediaPipe Face Mesh not loaded');
     }
 
-    faceMesh = new FaceMesh({
+    console.log('✅ MediaPipe Face Mesh found on window!');
+
+    faceMesh = new window.FaceMesh({
       locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
       }
@@ -304,7 +309,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// Initialize on load
-initFaceMesh();
+// Initialize after a short delay to ensure DOM is ready
+setTimeout(() => {
+  console.log('⏰ Starting initialization...');
+  initFaceMesh();
+}, 1000);
 
-console.log('✅ Offscreen Visual Tracker Ready!');
+console.log('✅ Offscreen Visual Tracker Script Loaded!');

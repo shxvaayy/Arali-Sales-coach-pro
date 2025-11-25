@@ -5,28 +5,56 @@
 
 console.log('🔧 Background Service Worker Loading...');
 
-let offscreenDocumentCreated = false;
+/**
+ * Check if offscreen document exists
+ */
+async function hasOffscreenDocument() {
+  try {
+    // Try to get all offscreen documents
+    const offscreenUrl = chrome.runtime.getURL('offscreen.html');
+    const matchedClients = await clients.matchAll();
+
+    for (const client of matchedClients) {
+      if (client.url === offscreenUrl) {
+        return true;
+      }
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
 
 /**
  * Create offscreen document for ML processing
  */
 async function createOffscreenDocument() {
-  if (offscreenDocumentCreated) {
-    console.log('Offscreen document already exists');
-    return;
-  }
-
   try {
+    // Check if already exists
+    const exists = await hasOffscreenDocument();
+    if (exists) {
+      console.log('✅ Offscreen document already exists');
+      return { success: true, alreadyExists: true };
+    }
+
+    // Create new offscreen document
     await chrome.offscreen.createDocument({
       url: 'offscreen.html',
-      reasons: ['WORKERS'],
+      reasons: ['DOM_SCRAPING'],
       justification: 'Run MediaPipe Face Mesh for engagement tracking'
     });
 
-    offscreenDocumentCreated = true;
     console.log('✅ Offscreen document created successfully');
+    return { success: true, alreadyExists: false };
   } catch (error) {
+    // If error is "Only a single offscreen document may be created"
+    if (error.message && error.message.includes('single offscreen')) {
+      console.log('✅ Offscreen document already exists (caught error)');
+      return { success: true, alreadyExists: true };
+    }
+
     console.error('❌ Failed to create offscreen document:', error);
+    return { success: false, error: error.message };
   }
 }
 
@@ -36,8 +64,8 @@ async function createOffscreenDocument() {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // Request to create offscreen document
   if (message.type === 'CREATE_OFFSCREEN_DOCUMENT') {
-    createOffscreenDocument().then(() => {
-      sendResponse({ success: true });
+    createOffscreenDocument().then((result) => {
+      sendResponse(result);
     }).catch(error => {
       sendResponse({ success: false, error: error.message });
     });
