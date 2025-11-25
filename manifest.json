@@ -1,26 +1,26 @@
 {
   "manifest_version": 3,
   "name": "Arali.ai - AI Sales Coach PRO",
-  "version": "3.7.2",
+  "version": "3.8.0",
   "description": "Arali.ai: Live AI sales coaching with client engagement tracking - 12 behavioral signals analyzed in real-time",
   "permissions": [
     "tabs",
     "activeTab",
-    "storage",
-    "offscreen"
+    "storage"
   ],
   "host_permissions": [
-    "https://meet.google.com/*"
+    "https://meet.google.com/*",
+    "https://cdn.jsdelivr.net/*"
   ],
-  "background": {
-    "service_worker": "background.js"
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self'"
   },
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],
       "js": [
         "participants-fixed.js",
-        "visual-tracker-offscreen.js",
+        "visual-tracker-tfjs.js",
         "audio-tracker.js",
         "engagement-tracker.js",
         "recorder-openai.js"
