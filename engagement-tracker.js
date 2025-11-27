@@ -345,24 +345,40 @@
    * Start engagement tracking
    */
   async function startTracking() {
-    if (isActive) return;
+    if (isActive) {
+      console.log('Already active, skipping');
+      return;
+    }
 
     console.log('🚀 Starting engagement tracking...');
 
     // Create UI panel
+    console.log('Creating engagement panel...');
     createEngagementPanel();
+    console.log('✅ Panel created!');
 
     // Wait for trackers to load
+    console.log('Waiting for trackers to load...');
     let retries = 0;
     while ((!window.visualTracker || !window.audioTracker) && retries < 10) {
+      console.log(`Retry ${retries}/10 - visualTracker: ${!!window.visualTracker}, audioTracker: ${!!window.audioTracker}`);
       await new Promise(resolve => setTimeout(resolve, 500));
       retries++;
     }
 
     if (!window.visualTracker || !window.audioTracker) {
-      console.error('❌ Trackers not loaded');
+      console.error('❌ Trackers not loaded after 10 retries!');
+      console.error('visualTracker exists:', !!window.visualTracker);
+      console.error('audioTracker exists:', !!window.audioTracker);
+
+      // Show panel anyway even if trackers not loaded
+      console.log('⚠️ Showing panel anyway with default values');
+      isActive = true;
+      updateInterval = setInterval(updateEngagementPanel, 1000);
       return;
     }
+
+    console.log('✅ Both trackers loaded!');
 
     // Start visual tracking
     if (window.visualTracker) {
@@ -425,13 +441,11 @@
     getData: getEngagementData
   };
 
-  // Auto-start when meeting detected (after 3 seconds)
+  // Auto-start ALWAYS after 3 seconds (no need to check for meeting)
   setTimeout(() => {
-    const inMeeting = document.querySelector('[data-is-muted]') !== null;
-    if (inMeeting) {
-      console.log('📊 Meeting detected, starting engagement tracking...');
-      startTracking();
-    }
+    console.log('📊 AUTO-STARTING ENGAGEMENT TRACKER...');
+    console.log('Creating panel and starting trackers...');
+    startTracking();
   }, 3000);
 
   console.log('✅ Main Engagement Tracker Ready!');
